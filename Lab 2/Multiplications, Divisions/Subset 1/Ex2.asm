@@ -22,7 +22,7 @@ start:
 mov BX, [d]
 mov AL, [a]
 mov CL, 2
-mul CL
+mul CL ; CX is 2*a
 add BX, AX ; d+2*a is stored in BX
 mov AL, [b]
 mul BYTE [c]

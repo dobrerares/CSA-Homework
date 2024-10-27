@@ -11,16 +11,38 @@ import exit msvcrt.dll  ; we specify the external library that defines the symbo
 segment data use32 class=data
 ; ...
 a db 10
-e dw 14
+b dw 11
+c dd 12
+d dq 13
 ; the program code will be part of a segment called code
 segment code use32 class=code
 start:
 ; ...
-;e-a*a
-mov EAX, [a]
-mul EAX
-sub [e], EBX
-mov EAX, [e]
+; (c+d-a)-(d-c)-b
+
+mov EAX, [c]
+mov EDX, 0
+sub EAX, [d+0]
+sbb EDX, [d+4]
+clc
+mov ECX, 0
+mov CL, [a]
+sub EAX, ECX
+sbb EDX, 0 ; (c+d-a) in EDX:EAX
+mov EBX, [d+0]
+mov ECX, [d+4]
+clc
+sub EBX, [c]
+sbb ECX, 0
+clc
+sub EAX, EBX
+sbb EDX, ECX ; (c+d-a)-(d-c) in EDX:EAX
+mov EBX, 0
+clc
+mov BX, [b]
+sub EAX, EBX
+sbb EDX, 0
+; final result in EDX:EAX
     ; call exit(0) ), 0 represents status code: SUCCESS
     push dword 0 ; saves on stack the parameter of the function exit
     call [exit] ; function exit is called in order to end the execution of the program
