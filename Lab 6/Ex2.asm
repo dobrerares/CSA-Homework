@@ -10,6 +10,7 @@ len equ ($ - s) / 2
 d resd len * 2
 
 segment code use32 class=code
+; An array of words is given. Write an asm program in order to obtain an array of doublewords, where each doubleword will contain each nibble unpacked on a byte (each nibble will be preceded by a 0 digit), arranged in an ascending order within the doubleword.
 start:
     mov ecx, len
     jecxz programend
